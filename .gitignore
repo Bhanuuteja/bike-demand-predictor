@@ -13,6 +13,13 @@ build/
 .pytest_cache/
 *.log
 
+# Notebooks and old files
+*.ipynb
+FinalBook.ipynb
+streamlit_app.py
+*_MLOPS.md
+PRODUCTION_FIXES.md
+
 # Large data files (too big for GitHub)
 Dataset/merged_citibike_tripdata.csv
 Dataset/__MACOSX/
