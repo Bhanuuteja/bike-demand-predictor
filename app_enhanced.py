@@ -44,10 +44,24 @@ st.set_page_config(page_title="Citi Bike MLOps Dashboard", layout="wide", initia
 
 # ==================== SETUP ====================
 
-# Load artifacts
-@st.cache_resource
+# Initialize models cache in session state
+if 'models_loaded' not in st.session_state:
+    st.session_state.models_loaded = False
+    st.session_state.models = {}
+    st.session_state.scalers = {}
+    st.session_state.station_mapping = {}
+    st.session_state.eda_metrics = {}
+    st.session_state.feature_cols = []
+    st.session_state.station_eda = {}
+
+# Load artifacts (without st.cache_resource to avoid structseq errors)
 def load_models_and_data():
     """Load all trained models, scalers, and EDA data with error handling."""
+    if st.session_state.models_loaded:
+        return (st.session_state.models, st.session_state.scalers, 
+                st.session_state.station_mapping, st.session_state.eda_metrics,
+                st.session_state.feature_cols, st.session_state.station_eda)
+    
     try:
         models = {}
         scalers = {}
@@ -119,6 +133,15 @@ def load_models_and_data():
                 logger.info(f"Loaded station-level EDA for {len(station_eda)} stations")
             except Exception as e:
                 logger.warning(f"Failed to load station EDA: {str(e)}")
+        
+        # Cache in session state
+        st.session_state.models = models
+        st.session_state.scalers = scalers
+        st.session_state.station_mapping = station_mapping
+        st.session_state.eda_metrics = eda_metrics
+        st.session_state.feature_cols = feature_cols
+        st.session_state.station_eda = station_eda
+        st.session_state.models_loaded = True
         
         return models, scalers, station_mapping, eda_metrics, feature_cols, station_eda
     
