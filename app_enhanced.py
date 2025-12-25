@@ -5,6 +5,7 @@ import numpy as np
 import sys
 import json
 import joblib
+import pickle
 import logging
 from pathlib import Path
 from datetime import datetime, date, time as dtime
@@ -67,10 +68,16 @@ def load_models_and_data():
                 if not scaler_path.exists():
                     logger.warning(f"Scaler file not found: {scaler_path}")
                     continue
+                
+                # Use pickle protocol to handle compatibility issues
+                try:
+                    models[cluster] = joblib.load(model_path)
+                    scalers[cluster] = joblib.load(scaler_path)
+                    logger.info(f"Loaded {cluster} model and scaler")
+                except (SystemError, pickle.UnpicklingError, EOFError) as pickle_err:
+                    logger.error(f"Pickle incompatibility for {cluster}: {str(pickle_err)}. Model will be unavailable.")
+                    continue
                     
-                models[cluster] = joblib.load(model_path)
-                scalers[cluster] = joblib.load(scaler_path)
-                logger.info(f"Loaded {cluster} model and scaler")
             except Exception as e:
                 logger.error(f"Failed to load {cluster} model/scaler: {str(e)}")
                 continue
