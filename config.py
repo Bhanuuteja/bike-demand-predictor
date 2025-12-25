@@ -16,7 +16,7 @@ ARTIFACT_DIR = Path('artifacts')
 
 # Date ranges
 MIN_DATE = datetime.strptime(os.getenv('MIN_DATE', '2020-01-01'), '%Y-%m-%d')
-MAX_DATE = datetime.strptime(os.getenv('MAX_DATE', '2024-04-30'), '%Y-%m-%d')
+MAX_DATE = datetime.strptime(os.getenv('MAX_DATE', '2025-09-30'), '%Y-%m-%d')
 
 # Logging
 LOG_LEVEL = os.getenv('LOG_LEVEL', 'INFO')
