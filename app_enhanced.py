@@ -144,6 +144,17 @@ def load_models_and_data():
             except Exception as e:
                 logger.warning(f"Failed to load station EDA: {str(e)}")
         
+        # Load user composition
+        user_composition = {}
+        user_comp_path = ARTIFACT_DIR / "user_composition.json"
+        if user_comp_path.exists():
+            try:
+                with open(user_comp_path) as f:
+                    user_composition = json.load(f)
+                logger.info(f"Loaded user composition metrics")
+            except Exception as e:
+                logger.warning(f"Failed to load user composition: {str(e)}")
+        
         # Cache in global dict (not session_state to avoid pickle errors)
         _MODELS_CACHE['models'] = models
         _MODELS_CACHE['scalers'] = scalers
@@ -338,13 +349,13 @@ def build_feature_vector(dt_obj, recent_avg, recent_std, recent_max, recent_min)
     }
 
 # ==================== MAIN APP ====================
-st.title("🚴 Citi Bike Demand Forecasting - MLOps Dashboard")
+st.title("🚴 Citi Bike New York City Metro - Demand Forecasting MLOps Dashboard")
 st.markdown(
     """
-**Problem:** Forecast station-level bike demand so operations can rebalance bikes and riders can plan availability.
-**Data:** Real Citi Bike trip records (Jan 2020 through Sep 2025; 5.7M+ trips) from the public system-data feed; no synthetic data.
-**Approach:** Cluster stations by demand (high/medium/low) and train XGBoost regressors with calendar and recent-demand features.
-**Output:** Next-hour demand prediction with demand level, plus historical EDA to explain patterns.
+**Problem:** Forecast station-level bike demand in New York City metro area (Jersey City hub) so operations can rebalance bikes and riders can plan availability.
+**Data:** Real Citi Bike trip records from Jersey City, New York City metro (Jan 2020 through Sep 2025; 5.7M+ trips) from the public system-data feed; includes member/casual user segmentation; no synthetic data.
+**Approach:** Cluster stations by demand (high/medium/low) and train XGBoost regressors with calendar, recent-demand, and user behavior features.
+**Output:** Next-hour demand prediction with demand level, user composition analysis, and historical EDA to explain patterns.
     """
 )
 
@@ -354,7 +365,7 @@ tab1, tab2 = st.tabs(["📊 Analysis (EDA)", "🔮 Prediction (Forecast)"])
 # ========== TAB 1: ANALYSIS (EDA) ==========
 with tab1:
     st.header("Exploratory Data Analysis")
-    st.caption("Data: Real Citi Bike trips (Jan 2020 through Sep 2025; 5.7M+ records); all charts use actual historical patterns.")
+    st.caption("Data: Real Citi Bike trips from NYC metro area - Jersey City hub (Jan 2020 through Sep 2025; 5.7M+ records); all charts use actual historical patterns.")
     
     # Create sub-tabs for different analysis levels
     eda_tab1, eda_tab2, eda_tab3 = st.tabs(["🌐 System-Level", "📍 Station-Level", "🎯 Cluster Comparison"])
@@ -705,7 +716,7 @@ with tab1:
 # ========== TAB 2: PREDICTION ==========
 with tab2:
     st.header("Demand Forecasting Engine")
-    st.caption("Forecasts are based on real Citi Bike data (Jan 2020 through Sep 2025; 5.7M+ trips). No synthetic or demo data.")
+    st.caption("Forecasts are based on real Citi Bike data from NYC metro (Jersey City; Jan 2020 through Sep 2025; 5.7M+ trips). No synthetic or demo data.")
     
     # Sidebar inputs
     st.sidebar.subheader("📍 Input Parameters")
