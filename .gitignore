@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+.env
+app.log
+.DS_Store
+.streamlit/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+*.log
+
+# Keep models and data for deployment
+# *.pkl
+# *.joblib
+# *.csv

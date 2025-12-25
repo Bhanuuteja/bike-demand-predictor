@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: bike-demand-predictor
+    env: docker
+    dockerfilePath: ./Dockerfile
+    region: oregon
+    plan: free
+    healthCheckPath: /_stcore/health
+    envVars:
+      - key: MODEL_PATH
+        value: artifacts/xgboost_v1.joblib
+      - key: CLUSTER_MODELS_DIR
+        value: artifacts/cluster_models
+      - key: DATA_DIR
+        value: Dataset
+      - key: LOG_LEVEL
+        value: INFO

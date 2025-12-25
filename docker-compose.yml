@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  streamlit-app:
+    build: .
+    container_name: bike-predictor
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./artifacts:/app/artifacts
+      - ./Dataset:/app/Dataset
+      - ./app.log:/app/app.log
+    environment:
+      - MODEL_PATH=artifacts/xgboost_v1.joblib
+      - CLUSTER_MODELS_DIR=artifacts/cluster_models
+      - DATA_DIR=Dataset
+      - LOG_LEVEL=INFO
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s

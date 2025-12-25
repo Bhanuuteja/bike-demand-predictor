@@ -1,0 +1,54 @@
+{
+  "total_trips": 336802,
+  "total_stations": 52,
+  "date_range": {
+    "start": "2020-01-01",
+    "end": "2020-12-31"
+  },
+  "hourly_stats": {
+    "mean": 2.3711441608673467,
+    "std": 2.36656555911886,
+    "min": 1,
+    "max": 46
+  },
+  "peak_hours": {
+    "morning_rush": 2,
+    "evening_rush": 3,
+    "off_peak": 2
+  },
+  "weekend_vs_weekday": {
+    "weekday": 2,
+    "weekend": 2
+  },
+  "monthly_trends": {
+    "1": 2,
+    "2": 2,
+    "3": 1,
+    "4": 1,
+    "5": 2,
+    "6": 2,
+    "7": 2,
+    "8": 2,
+    "9": 2,
+    "10": 3,
+    "11": 1,
+    "12": 1
+  },
+  "cluster_stats": {
+    "High Demand": {
+      "mae": 1.2668226147671213,
+      "r2": 0.6449644813122357,
+      "samples": 54110
+    },
+    "Medium Demand": {
+      "mae": 0.7545536097967559,
+      "r2": 0.4464922935127741,
+      "samples": 65945
+    },
+    "Low Demand": {
+      "mae": 0.447147892581092,
+      "r2": 0.22515892641597246,
+      "samples": 15162
+    }
+  }
+}
