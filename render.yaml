@@ -5,7 +5,7 @@ services:
     dockerfilePath: ./Dockerfile
     region: oregon
     plan: free
-    healthCheckPath: /_stcore/health
+    healthCheckPath: /
     envVars:
       - key: MODEL_PATH
         value: artifacts/xgboost_v1.joblib
