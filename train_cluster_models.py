@@ -143,11 +143,11 @@ for cluster in ['High Demand', 'Medium Demand', 'Low Demand']:
     print(f"  Test MAE: {mae:.2f}")
     print(f"  Test R²: {r2:.4f}")
     
-    # Save model and scaler
+    # Save model and scaler with protocol 4 for cross-version compatibility
     model_path = f"artifacts/cluster_models/{cluster.lower().replace(' ', '_')}_model.joblib"
     scaler_path = f"artifacts/cluster_models/{cluster.lower().replace(' ', '_')}_scaler.joblib"
-    joblib.dump(model, model_path)
-    joblib.dump(scaler, scaler_path)
+    joblib.dump(model, model_path, protocol=4)
+    joblib.dump(scaler, scaler_path, protocol=4)
     
     cluster_models[cluster] = model_path
     cluster_scalers[cluster] = scaler_path
