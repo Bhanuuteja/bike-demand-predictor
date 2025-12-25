@@ -14,8 +14,7 @@ import plotly.express as px
 import warnings
 warnings.filterwarnings('ignore')
 
-# Provide backward-compatible alias for pickles that reference numpy._core
-sys.modules.setdefault("numpy._core", np.core)
+# Note: Removed numpy._core alias as it may cause structseq pickle errors
 
 # Import configuration
 from config import (
