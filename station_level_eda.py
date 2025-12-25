@@ -141,11 +141,39 @@ artifacts_dir.mkdir(exist_ok=True)
 with open(artifacts_dir / "station_level_eda.json", "w") as f:
     json.dump(station_eda, f, indent=2, default=str)
 
+# Compute overall user composition stats
+user_stats = {}
+if 'usertype' in bike.columns:
+    user_composition = bike['usertype'].value_counts()
+    user_stats['member_vs_casual'] = {k: int(v) for k, v in user_composition.items()}
+    user_stats['member_ratio'] = float((bike['usertype'] == 'Member').sum() / len(bike)) if len(bike) > 0 else 0.5
+
+if 'gender' in bike.columns:
+    gender_dist = bike['gender'].value_counts()
+    user_stats['gender_distribution'] = {str(k): int(v) for k, v in gender_dist.items()}
+
+if 'tripduration' in bike.columns:
+    user_stats['avg_trip_duration_minutes'] = float(bike['tripduration'].mean() / 60)
+    user_stats['median_trip_duration_minutes'] = float(bike['tripduration'].median() / 60)
+
+# Save user stats
+with open(artifacts_dir / "user_composition.json", "w") as f:
+    json.dump(user_stats, f, indent=2, default=str)
+
 print(f"\n{'=' * 60}")
 print(f"✓ STATION-LEVEL EDA GENERATED")
 print(f"{'=' * 60}")
 print(f"Processed: {len(station_eda)} stations with sufficient data")
-print(f"Saved to: artifacts/station_level_eda.json")
+print(f"Saved to: artifacts/station_level_eda.json & artifacts/user_composition.json")
+
+if user_stats:
+    print(f"\nUser Composition (All Data):")
+    if 'member_vs_casual' in user_stats:
+        for utype, count in user_stats['member_vs_casual'].items():
+            pct = (count / sum(user_stats['member_vs_casual'].values())) * 100
+            print(f"  {utype}: {count:,} trips ({pct:.1f}%)")
+    if 'avg_trip_duration_minutes' in user_stats:
+        print(f"  Avg trip duration: {user_stats['avg_trip_duration_minutes']:.1f} min")
 
 # Show top 10 stations
 print(f"\nTop 10 Stations by Trip Volume:")

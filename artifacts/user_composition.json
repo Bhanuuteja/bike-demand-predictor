@@ -1,0 +1,14 @@
+{
+  "member_vs_casual": {
+    "Subscriber": 231531,
+    "Customer": 105271
+  },
+  "member_ratio": 0.0,
+  "gender_distribution": {
+    "1.0": 199807,
+    "2.0": 84798,
+    "0.0": 52197
+  },
+  "avg_trip_duration_minutes": 26.24508232334329,
+  "median_trip_duration_minutes": 10.25
+}
