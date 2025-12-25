@@ -43,7 +43,5 @@ def validate_environment():
     if not CLUSTER_MODELS_DIR.exists():
         errors.append(f"Missing cluster models directory: {CLUSTER_MODELS_DIR}")
     
-    if not DATA_DIR.exists():
-        errors.append(f"Missing data directory: {DATA_DIR}")
-    
+    # DATA_DIR is optional for serving predictions; skip strict validation
     return errors

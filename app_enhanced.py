@@ -2,6 +2,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import sys
 import json
 import joblib
 import logging
@@ -11,6 +12,9 @@ import plotly.graph_objects as go
 import plotly.express as px
 import warnings
 warnings.filterwarnings('ignore')
+
+# Provide backward-compatible alias for pickles that reference numpy._core
+sys.modules.setdefault("numpy._core", np.core)
 
 # Import configuration
 from config import (
@@ -692,7 +696,8 @@ with tab2:
     payload = build_feature_vector(dt_obj, recent_avg, recent_std, recent_max, recent_min)
     
     # Make prediction
-    if st.button("🔮 Generate Forecast", type="primary", width='stretch'):
+    # Use default button width to stay compatible with older Streamlit versions
+    if st.button("🔮 Generate Forecast", type="primary"):
         # Input validation
         validation_errors = []
         
