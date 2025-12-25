@@ -143,11 +143,19 @@ for cluster in ['High Demand', 'Medium Demand', 'Low Demand']:
     print(f"  Test MAE: {mae:.2f}")
     print(f"  Test R²: {r2:.4f}")
     
-    # Save model and scaler with protocol 4 for cross-version compatibility
-    model_path = f"artifacts/cluster_models/{cluster.lower().replace(' ', '_')}_model.joblib"
-    scaler_path = f"artifacts/cluster_models/{cluster.lower().replace(' ', '_')}_scaler.joblib"
-    joblib.dump(model, model_path, protocol=4)
-    joblib.dump(scaler, scaler_path, protocol=4)
+    # Save model in XGBoost native format (avoid pickle)
+    cluster_key = cluster.lower().replace(' ', '_')
+    model_path = f"artifacts/cluster_models/{cluster_key}_model.json"
+    model.save_model(model_path)
+    
+    # Save scaler parameters as JSON (avoid pickle)
+    scaler_path = f"artifacts/cluster_models/{cluster_key}_scaler.json"
+    scaler_params = {
+        "mean": scaler.mean_.tolist(),
+        "scale": scaler.scale_.tolist()
+    }
+    with open(scaler_path, 'w') as f:
+        json.dump(scaler_params, f)
     
     cluster_models[cluster] = model_path
     cluster_scalers[cluster] = scaler_path

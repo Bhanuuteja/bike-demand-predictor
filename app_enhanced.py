@@ -70,11 +70,11 @@ def load_models_and_data():
         if not CLUSTER_MODELS_DIR.exists():
             raise FileNotFoundError(f"Cluster models directory not found: {CLUSTER_MODELS_DIR}")
         
-        # Load cluster models and scalers
+        # Load cluster models and scalers (using native formats to avoid pickle issues)
         for cluster in ['high_demand', 'medium_demand', 'low_demand']:
             try:
-                model_path = CLUSTER_MODELS_DIR / f"{cluster}_model.joblib"
-                scaler_path = CLUSTER_MODELS_DIR / f"{cluster}_scaler.joblib"
+                model_path = CLUSTER_MODELS_DIR / f"{cluster}_model.json"
+                scaler_path = CLUSTER_MODELS_DIR / f"{cluster}_scaler.json"
                 
                 if not model_path.exists():
                     logger.warning(f"Model file not found: {model_path}")
@@ -83,14 +83,23 @@ def load_models_and_data():
                     logger.warning(f"Scaler file not found: {scaler_path}")
                     continue
                 
-                # Use pickle protocol to handle compatibility issues
-                try:
-                    models[cluster] = joblib.load(model_path)
-                    scalers[cluster] = joblib.load(scaler_path)
-                    logger.info(f"Loaded {cluster} model and scaler")
-                except (SystemError, pickle.UnpicklingError, EOFError) as pickle_err:
-                    logger.error(f"Pickle incompatibility for {cluster}: {str(pickle_err)}. Model will be unavailable.")
-                    continue
+                # Load XGBoost model from native JSON format
+                import xgboost as xgb
+                model = xgb.XGBRegressor()
+                model.load_model(str(model_path))
+                models[cluster] = model
+                
+                # Reconstruct scaler from saved parameters
+                with open(scaler_path) as f:
+                    scaler_params = json.load(f)
+                
+                from sklearn.preprocessing import StandardScaler
+                scaler = StandardScaler()
+                scaler.mean_ = np.array(scaler_params['mean'])
+                scaler.scale_ = np.array(scaler_params['scale'])
+                scalers[cluster] = scaler
+                
+                logger.info(f"Loaded {cluster} model and scaler")
                     
             except Exception as e:
                 logger.error(f"Failed to load {cluster} model/scaler: {str(e)}")
