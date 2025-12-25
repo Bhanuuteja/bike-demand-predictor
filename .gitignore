@@ -13,7 +13,10 @@ build/
 .pytest_cache/
 *.log
 
-# Keep models and data for deployment
+# Large data files (too big for GitHub)
+Dataset/merged_citibike_tripdata.csv
+Dataset/__MACOSX/
+
+# Keep individual monthly CSVs and models
 # *.pkl
 # *.joblib
-# *.csv
