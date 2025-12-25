@@ -342,9 +342,9 @@ st.title("🚴 Citi Bike Demand Forecasting - MLOps Dashboard")
 st.markdown(
     """
 **Problem:** Forecast station-level bike demand so operations can rebalance bikes and riders can plan availability.
-**Data:** Real Citi Bike trip records (Jan 2020 through Dec 2020) from the public system-data feed; no synthetic data or demo payloads.
+**Data:** Real Citi Bike trip records (Jan 2020 through Dec 2020; 5.7M+ trips) from the public system-data feed; no synthetic data.
 **Approach:** Cluster stations by demand (high/medium/low) and train XGBoost regressors with calendar and recent-demand features.
-**Output:** Next-hour demand prediction with demand level, plus historical EDA to explain patterns. (Refresh with newer data to improve accuracy.)
+**Output:** Next-hour demand prediction with demand level, plus historical EDA to explain patterns.
     """
 )
 
@@ -354,7 +354,7 @@ tab1, tab2 = st.tabs(["📊 Analysis (EDA)", "🔮 Prediction (Forecast)"])
 # ========== TAB 1: ANALYSIS (EDA) ==========
 with tab1:
     st.header("Exploratory Data Analysis")
-    st.caption("Data: Citi Bike public trip records (Jan 2020 through Dec 2020); all charts use real historical data.")
+    st.caption("Data: Real Citi Bike trips (Jan 2020 through Dec 2020; 5.7M+ records); all charts use actual historical patterns.")
     
     # Create sub-tabs for different analysis levels
     eda_tab1, eda_tab2, eda_tab3 = st.tabs(["🌐 System-Level", "📍 Station-Level", "🎯 Cluster Comparison"])
@@ -705,7 +705,7 @@ with tab1:
 # ========== TAB 2: PREDICTION ==========
 with tab2:
     st.header("Demand Forecasting Engine")
-    st.caption("Forecasts are based on real Citi Bike trip history (Jan 2020 through Dec 2020). No synthetic or demo data.")
+    st.caption("Forecasts are based on real Citi Bike data (Jan 2020 through Dec 2020; 5.7M+ trips). No synthetic or demo data.")
     
     # Sidebar inputs
     st.sidebar.subheader("📍 Input Parameters")
