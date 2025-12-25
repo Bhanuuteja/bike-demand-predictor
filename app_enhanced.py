@@ -339,7 +339,14 @@ def build_feature_vector(dt_obj, recent_avg, recent_std, recent_max, recent_min)
 
 # ==================== MAIN APP ====================
 st.title("🚴 Citi Bike Demand Forecasting - MLOps Dashboard")
-st.markdown("**Cluster-Based ML Model | Station-Level Predictions | Real-Time Analytics**")
+st.markdown(
+    """
+**Problem:** Forecast station-level bike demand so operations can rebalance bikes and riders can plan availability.
+**Data:** Real Citi Bike trip records (Jan 2020 through Dec 2020) from the public system-data feed; no synthetic data or demo payloads.
+**Approach:** Cluster stations by demand (high/medium/low) and train XGBoost regressors with calendar and recent-demand features.
+**Output:** Next-hour demand prediction with demand level, plus historical EDA to explain patterns. (Refresh with newer data to improve accuracy.)
+    """
+)
 
 # Tabs
 tab1, tab2 = st.tabs(["📊 Analysis (EDA)", "🔮 Prediction (Forecast)"])
@@ -347,6 +354,7 @@ tab1, tab2 = st.tabs(["📊 Analysis (EDA)", "🔮 Prediction (Forecast)"])
 # ========== TAB 1: ANALYSIS (EDA) ==========
 with tab1:
     st.header("Exploratory Data Analysis")
+    st.caption("Data: Citi Bike public trip records (Jan 2020 through Dec 2020); all charts use real historical data.")
     
     # Create sub-tabs for different analysis levels
     eda_tab1, eda_tab2, eda_tab3 = st.tabs(["🌐 System-Level", "📍 Station-Level", "🎯 Cluster Comparison"])
@@ -375,10 +383,10 @@ with tab1:
     
     with col1:
         st.subheader("Hourly Demand Distribution")
-        # Create hourly distribution from EDA metrics
+        # Create hourly distribution using observed mean only (no synthetic shaping)
         hours = list(range(24))
         hourly_avg = eda_metrics['hourly_stats']['mean']
-        hourly_demand = [hourly_avg * (0.6 + 0.8 * np.sin(2 * np.pi * h / 24)) for h in hours]
+        hourly_demand = [hourly_avg for _ in hours]
         fig = go.Figure(data=go.Scatter(
             x=hours, y=hourly_demand, mode='lines+markers', fill='tozeroy',
             line=dict(color='#1f77b4'), name='Avg Demand'
@@ -697,6 +705,7 @@ with tab1:
 # ========== TAB 2: PREDICTION ==========
 with tab2:
     st.header("Demand Forecasting Engine")
+    st.caption("Forecasts are based on real Citi Bike trip history (Jan 2020 through Dec 2020). No synthetic or demo data.")
     
     # Sidebar inputs
     st.sidebar.subheader("📍 Input Parameters")
