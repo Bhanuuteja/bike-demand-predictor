@@ -160,35 +160,4 @@ docker-compose up
 tail -f app.log
 ```
 
-## 📈 Production Features
 
-✅ **Error Handling** - Comprehensive try/catch with user-friendly messages  
-✅ **Logging** - File-based logging with timestamps  
-✅ **Input Validation** - Date ranges, numerical bounds, feature validation  
-✅ **Caching** - Model and data caching for performance  
-✅ **Configuration** - Environment-based config management  
-✅ **Health Checks** - Docker health monitoring  
-✅ **Security** - Non-root user in container  
-
-## 🎓 Use Cases
-
-- **Operations Planning** - Optimize bike distribution across stations
-- **Demand Forecasting** - Predict future demand for capacity planning
-- **Resource Allocation** - Staff deployment during peak hours
-- **Maintenance Scheduling** - Plan maintenance during low-demand periods
-
-## 📝 License
-
-MIT License - See LICENSE file for details
-
-## 🤝 Contributing
-
-Contributions welcome! Please open an issue or submit a pull request.
-
-## 📧 Contact
-
-For questions or support, please open an issue on GitHub.
-
----
-
-**Built with ❤️ for smarter urban mobility**
