@@ -23,12 +23,11 @@ from config import (
     MIN_DATE, MAX_DATE, validate_environment
 )
 
-# Configure logging
+# Configure logging (stream only to avoid file handle pickle issues)
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler('app.log'),
         logging.StreamHandler()
     ]
 )
